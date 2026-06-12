@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureAuth 2.0 | Dashboard & Image Gallery</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A premium secure authentication dashboard and cloud image gallery with role-based access control.">
+    <meta name="keywords" content="Authentication, JWT, MongoDB, Cloudinary, Express, Single Page Application">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Background dynamic gradient elements -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="#/" class="logo">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span class="logo-text">Secure<span>Auth</span></span>
+            </a>
+            
+            <nav class="main-nav">
+                <a href="#/dashboard" id="nav-dashboard" class="nav-link hidden">
+                    <i data-lucide="layout-dashboard"></i> Dashboard
+                </a>
+                <a href="#/gallery" id="nav-gallery" class="nav-link hidden">
+                    <i data-lucide="image"></i> Gallery
+                </a>
+                <a href="#/admin" id="nav-admin" class="nav-link hidden">
+                    <i data-lucide="shield-alert"></i> Admin
+                </a>
+                <a href="#/login" id="nav-login" class="nav-link">
+                    <i data-lucide="log-in"></i> Sign In
+                </a>
+                <a href="#/register" id="nav-register" class="nav-link nav-btn">
+                    Get Started
+                </a>
+                <button id="nav-logout" class="nav-link nav-btn logout-btn hidden">
+                    <i data-lucide="log-out"></i> Logout
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content wrapper -->
+    <main class="main-content">
+        
+        <!-- SECTION: Loading/Splash -->
+        <section id="splash-section" class="section-view active">
+            <div class="splash-card">
+                <div class="spinner"></div>
+                <p>Initializing SecureAuth session...</p>
+            </div>
+        </section>
+
+        <!-- SECTION: Login -->
+        <section id="login-section" class="section-view">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Enter your credentials to access your dashboard</p>
+                </div>
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="user" class="input-icon"></i>
+                            <input type="text" id="login-username" placeholder="johndoe" required autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="lock" class="input-icon"></i>
+                            <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn" id="login-submit-btn">
+                        <span>Sign In</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </form>
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#/register">Create one now</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Register -->
+        <section id="register-section" class="section-view">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Create Account</h2>
+                    <p>Get started with a free secure profile</p>
+                </div>
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="user" class="input-icon"></i>
+                            <input type="text" id="register-username" placeholder="johndoe" required autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="mail" class="input-icon"></i>
+                            <input type="email" id="register-email" placeholder="john@example.com" required autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="lock" class="input-icon"></i>
+                            <input type="password" id="register-password" placeholder="••••••••" required autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-role">Assign Role</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="briefcase" class="input-icon"></i>
+                            <select id="register-role" required>
+                                <option value="user" selected>Standard User</option>
+                                <option value="admin">Administrator</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn" id="register-submit-btn">
+                        <span>Register Account</span>
+                        <i data-lucide="user-plus"></i>
+                    </button>
+                </form>
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#/login">Sign in</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Dashboard -->
+        <section id="dashboard-section" class="section-view">
+            <div class="dashboard-grid">
+                <!-- Welcome Banner Card -->
+                <div class="glass-card welcome-card">
+                    <div class="welcome-text">
+                        <h1 id="dashboard-welcome-title">Welcome back, User!</h1>
+                        <p>Manage your account, upload secure images to Cloudinary, and explore administrative functions.</p>
+                    </div>
+                    <div class="welcome-action-buttons">
+                        <a href="#/gallery" class="action-btn-primary">
+                            <i data-lucide="image"></i> Go to Gallery
+                        </a>
+                        <a href="#/admin" id="dashboard-admin-btn" class="action-btn-secondary hidden">
+                            <i data-lucide="shield-alert"></i> Admin Panel
+                        </a>
+                    </div>
+                </div>
+
+                <!-- User profile details -->
+                <div class="glass-card profile-details-card">
+                    <h3>Account Profile</h3>
+                    <div class="profile-avatar-row">
+                        <div class="avatar-large" id="profile-avatar-letter">U</div>
+                        <div>
+                            <h4 id="profile-username">username</h4>
+                            <p id="profile-role-badge" class="badge">Role: User</p>
+                        </div>
+                    </div>
+                    <div class="details-list">
+                        <div class="detail-item">
+                            <span class="label"><i data-lucide="key"></i> User ID</span>
+                            <span class="value" id="profile-userid">...</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label"><i data-lucide="award"></i> Permissions</span>
+                            <span class="value" id="profile-permissions">Standard User Access</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Gallery & Image Upload -->
+        <section id="gallery-section" class="section-view">
+            <div class="gallery-container">
+                <!-- Header with Title -->
+                <div class="section-header-row">
+                    <div>
+                        <h2>Secure Cloud Gallery</h2>
+                        <p>Upload images privately to Cloudinary and fetch them dynamically.</p>
+                    </div>
+                </div>
+
+                <div class="gallery-layout-grid">
+                    <!-- Left: Upload Card -->
+                    <div class="glass-card upload-card">
+                        <h3>Upload New Image</h3>
+                        <form id="upload-form" class="upload-form-element">
+                            <div class="drag-drop-zone" id="drop-zone">
+                                <input type="file" id="image-file-input" accept="image/*" class="file-input-hidden" required>
+                                <i data-lucide="cloud-upload" class="upload-icon"></i>
+                                <p class="drag-text">Drag & drop your image here, or <span>browse</span></p>
+                                <p class="drag-subtext">Supports JPG, PNG, GIF, WebP (Max 5MB)</p>
+                            </div>
+                            
+                            <!-- File preview area -->
+                            <div class="upload-preview-container hidden" id="upload-preview-box">
+                                <img src="" alt="Preview" id="upload-preview-img">
+                                <div class="preview-details">
+                                    <span id="preview-file-name">filename.jpg</span>
+                                    <span id="preview-file-size">145 KB</span>
+                                </div>
+                                <button type="button" class="remove-preview-btn" id="remove-preview-btn">
+                                    <i data-lucide="x"></i>
+                                </button>
+                            </div>
+
+                            <button type="submit" class="submit-btn upload-btn" id="upload-submit-btn">
+                                <i data-lucide="upload"></i>
+                                <span>Upload to Cloudinary</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right: Gallery List -->
+                    <div class="glass-card gallery-list-card">
+                        <h3>All Shared Images</h3>
+                        <div id="gallery-grid" class="gallery-grid-element">
+                            <!-- JS will inject images here -->
+                            <div class="gallery-empty-state">
+                                <i data-lucide="image-off"></i>
+                                <p>No images uploaded yet. Be the first to upload!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Admin -->
+        <section id="admin-section" class="section-view">
+            <div class="glass-card admin-dashboard">
+                <div class="admin-header">
+                    <div class="admin-badge"><i data-lucide="shield"></i> ADMIN PANEL</div>
+                    <h2 id="admin-welcome-msg">Administrator Dashboard</h2>
+                    <p>Protected administrative interface. View system health and credentials configuration.</p>
+                </div>
+
+                <div class="admin-stats-grid">
+                    <div class="stat-card">
+                        <i data-lucide="users" class="stat-icon text-purple"></i>
+                        <span class="stat-num">Active</span>
+                        <span class="stat-label">Session Guard Secured</span>
+                    </div>
+                    <div class="stat-card">
+                        <i data-lucide="server" class="stat-icon text-cyan"></i>
+                        <span class="stat-num">Express 5.x</span>
+                        <span class="stat-label">REST API Status: OK</span>
+                    </div>
+                    <div class="stat-card">
+                        <i data-lucide="database" class="stat-icon text-green"></i>
+                        <span class="stat-num">MongoDB</span>
+                        <span class="stat-label">Connection: Successful</span>
+                    </div>
+                </div>
+
+                <div class="system-logs-card">
+                    <h4>System Environment Configurations</h4>
+                    <div class="log-item">
+                        <span class="log-tag tag-success">Active</span>
+                        <span class="log-text">JWT Access Verification is active with secret key.</span>
+                    </div>
+                    <div class="log-item">
+                        <span class="log-tag tag-info">Cloudinary</span>
+                        <span class="log-text">Media storage uploads connected.</span>
+                    </div>
+                    <div class="log-item">
+                        <span class="log-tag tag-warning">CORS</span>
+                        <span class="log-text">Access-Control-Allow-Origin enabled for cross-port interaction.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lightbox Modal for zooming images -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <span class="close-lightbox" id="close-lightbox">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <!-- Application Script Files -->
+    <script src="/js/api.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
